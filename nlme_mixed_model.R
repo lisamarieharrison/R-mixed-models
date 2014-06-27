@@ -5,6 +5,7 @@ setwd(dir = "C:/Users/Lisa/Documents/phd/southern ocean/Mixed models/data")
 glm.full <- read.csv(file = "rstnCTD.csv", header= T) 
 library(nlme)
 library(lmeSplines)
+library(lme4)
 attach(glm.full)
 
 glm.full[glm.full$fluoro == -9, c(9:17)] <- NA
@@ -97,31 +98,14 @@ s <- 10
 plot(glm.spl$profile.depth[glm.spl$stn == s], glm.spl$l.fluoro[glm.spl$stn == s], xlab = "profile.depth")
 points(glm.spl$profile.depth[glm.spl$stn == s], fitted(fluoro.mm1)[glm.spl$stn == s], col = "red")
 
+#plot variables with l.fluoro as colour
 z <- na.omit(l.fluoro)
 zlen <- length(l.fluoro)
 levels <- seq(min(z),max(z),length.out = zlen)
 col <- colorRampPalette(c("black","red"))(zlen)[rank(z)]
 plot(temp, par, col = col, pch = 19)
-
 plot(temp, oxy, col = col, pch = 19)
 
-
-fluoro.mm <- glmer((fluoro + 1)~ par + profile.depth + temp + oxy + (1 | stn), family = Gamma, data = glm.full)
-summary(fluoro.mm)
-plot(fluoro.mm)
-hist(resid(fluoro.mm))
-
-
-
-
-s <- 22
-plot(glm.full$profile.depth[glm.full$stn == s], glm.full$fluoro[glm.full$stn == s] + 1, xlab = "profile.depth", ylab = "", pch = 19)
-points(glm.full$profile.depth[glm.full$stn == s], fitted(fluoro.mm)[glm.full$stn == s], col = "red", pch = 19)
-title("Fitted (red) vs log fluoro (black) values for all depths of station 2")
-
-
-
-plot(fitted(fluoro.mm)[stn == 62])
 
 
 
