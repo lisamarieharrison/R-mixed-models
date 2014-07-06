@@ -53,3 +53,22 @@ plot(glm.full$profile.depth[glm.full$stn == s], glm.full$fluoro[glm.full$stn == 
 points(glm.full$profile.depth[glm.full$stn == s], fit[glm.full$stn == s], col = "red", pch = 19)
 title("Fitted (red) vs log fluoro (black) values for all depths of station 2")
 
+
+#additive mixed model using gamm with separate spline for each station
+fluoro.mm <- gamm((1 + fluoro )~ s(par, by = stn) + s(profile.depth, by = stn) + s(temp, by = stn) + s(oxy, by = stn), 
+                  random = list(stn =~ 1), family = Gamma, data = glm.full)
+summary(fluoro.mm$lme)
+plot(fluoro.mm$gam)
+gam.check(fluoro.mm$gam)
+res <- residuals(fluoro.mm$gam) #extract residuals
+fit <- fitted(fluoro.mm$gam) #extract residuals
+
+s <- 2
+plot(glm.full$profile.depth[glm.full$stn == s], glm.full$fluoro[glm.full$stn == s] + 1, xlab = "profile.depth", ylab = "", pch = 19)
+points(glm.full$profile.depth[glm.full$stn == s], fit[glm.full$stn == s], col = "red", pch = 19)
+title("Fitted (red) vs log fluoro (black) values for all depths of station 2")
+
+
+
+
+
