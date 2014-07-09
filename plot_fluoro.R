@@ -1,6 +1,7 @@
 #runs additive mixed models in R using mgcv'
 setwd(dir = "C:/Users/Lisa/Documents/phd/southern ocean/Mixed models/data")
 glm.full <- read.csv(file = "fullCTD.csv", header= T) 
+ctd <- read.csv(file = "distToIce.csv", header = T)
 glm.full[which(glm.full$fluoro == -9), c(9:16)] <- NA
 attach(glm.full)
 
@@ -62,6 +63,31 @@ zlen <- length(z)
 levels <- seq(min(z),max(z),length.out = zlen)
 col <- colorRampPalette(c("black","yellow"))(zlen)[rank(z)]
 plot(glm.full$par, -glm.full$profile.depth, col = col, pch = 19)
+
+
+#plot distance from ice edge by latitude/longitude
+plot(ctd$longitude, ctd$latitude, col = "white", xlab = "longitude",
+     ylab = "latitude", main = "distance to ice by latitude/longitude")
+text(ctd$longitude, ctd$latitude, labels = round(ctd$distToIce), 0)
+
+#plot fluoro against distance to ice edge 
+plot(rep(ctd$distToIce, 1, each = 125), glm.full$fluoro[glm.full$stn != 1], xlab = "Distance to Ice", ylab = "fluoro")
+title("fluoro against distance to ice edge")
+
+#plot fluoro against depth with distance from ice edge <100km in red
+plot(glm.full$profile.depth, glm.full$fluoro, xlab = "profile depth", ylab = "fluoro")
+rd.stn <- unique(ctd$station[which(ctd$distToIce <100)])
+points(glm.full$profile.depth[glm.full$stn %in% rd.stn], glm.full$fluoro[glm.full$stn %in% rd.stn], col = "red")
+
+#plot distance from ice edge against par with fluoro > 6 in red
+plot(rep(ctd$distToIce, 1, each = 125)[glm.full$profile.depth < 50], glm.full$par[glm.full$profile.depth < 50])
+rd.stn <- unique(glm.full$stn[which(glm.full$fluoro > 6)])
+points(rep(ctd$distToIce, 1, each = 125)[glm.full$profile.depth < 50 & glm.full$stn %in% rd.stn], glm.full$par[glm.full$profile.depth < 50 & glm.full$stn %in% rd.stn], col = "red")
+
+
+
+
+
 
 
 
