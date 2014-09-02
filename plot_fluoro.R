@@ -86,9 +86,11 @@ points(rep(ctd$distToIce, 1, each = 125)[glm.full$profile.depth < 50 & glm.full$
 
 
 
-
-
-
+#plot temperature against depth with distance from ice edge <50km in red
+plot(glm.full$profile.depth[glm.full$temp < 5], glm.full$temp[glm.full$temp < 5], xlab = "depth", ylab = "temp")
+title("Temperature against depth with stations <50km from ice edge in red")
+rd.stn <- unique(ctd$station[which(ctd$distToIce <50)])
+points(glm.full$profile.depth[glm.full$stn %in% rd.stn], glm.full$temp[glm.full$stn %in% rd.stn], col = "red")
 
 
 
