@@ -1,3 +1,8 @@
+#calculates marginal and conditional residuals for asreml mixed model object
+#author: Lisa-Marie Harrison
+#date: 3/8/2015
+
+
 # Get design matrix of fixed effects from model
 Fmat <- model.matrix(eval(asreml.fit$fixed.formula)[-2], glm.spl)
 
