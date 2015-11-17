@@ -62,6 +62,13 @@ test_gcdHF <- function() {
   
 }
 
+test_setUpFluoro <- function() {
+  
+  suppressWarnings(answer <- setUpFluoro(dat))
+  
+  checkEqualsNumeric(c(1125, 15), dim(answer))
+  
+}
 
 
 
