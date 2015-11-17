@@ -17,7 +17,7 @@ test_calcRsquared <- function() {
   
   asreml.fit <- asreml(fixed = fluoro ~ depth, random =~ stn, data = dat, na.method.X = "include", trace = F)
   
-  answer <- calcRsquared(asreml.fit, rand = "stn", data = dat)
+  answer <- calcRsquared(asreml.fit, varStruct = FALSE, rand = "stn", data = dat)
   
   checkEqualsNumeric(0.33, round(answer$marginal, 2))
   checkEqualsNumeric(0.33, round(answer$conditional, 2))
