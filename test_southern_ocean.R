@@ -1,5 +1,6 @@
 dat <- read.csv(file = "C:/Users/Lisa/Documents/phd/southern ocean/Mixed models/Data/test data/ctd_example.csv", header= T)
 names(dat) <- c("survey", "stn", "lat", "long", "start.time", "end.time", "depth", "transmittance", "cond", "temp", "sal", "par", "oxygen", "fluoro", "x2", "ice", "wm")
+library(asreml)
 
 test_asremlAIC <- function() {
   
@@ -56,6 +57,9 @@ test_gcdHF <- function() {
   
   source("C:/Users/Lisa/Documents/phd/southern ocean/Mixed models/R code/R-functions-southern-ocean/deg2rad.R")
   
+  lat  <- dat$lat[duplicated(dat$stn) == FALSE]
+  long <- dat$long[duplicated(dat$stn) == FALSE]
+  
   answer <- gcdHF(deg2rad(lat[1]), deg2rad(long[1]), deg2rad(lat[2]), deg2rad(long[2]))
   
   checkEqualsNumeric(92, round(answer))
@@ -70,6 +74,19 @@ test_setUpFluoro <- function() {
   
 }
 
+test_rocCurve <- function() {
+  
+  suppressWarnings(pa <- log(dat$fluoro))
+  pa[pa > 0] <- 1
+  pa[pa <= 0] <- 0
+  
+  pa.lm <- glm(pa ~ z + temp + sal, dat = d, family = "binomial")
+  
+  answer <- rocCurve(pa.lm, s = 0.5)
+  
+  checkEqualsNumeric(c(0.33, 0.67), round(answer, 2))
+  
+}
 
 
 
