@@ -76,15 +76,16 @@ test_setUpFluoro <- function() {
 
 test_rocCurve <- function() {
   
-  suppressWarnings(pa <- log(dat$fluoro))
-  pa[pa > 0] <- 1
-  pa[pa <= 0] <- 0
+  suppressWarnings(dat$pa <- log(dat$fluoro))
+  dat$pa[dat$pa > 0] <- 1
+  dat$pa[dat$pa <= 0] <- 0
   
-  pa.lm <- glm(pa ~ z + temp + sal, dat = d, family = "binomial")
   
-  answer <- rocCurve(pa.lm, s = 0.5)
+  pa.lm <- glm(pa ~ temp + sal, dat = dat, family = "binomial")
   
-  checkEqualsNumeric(c(0.33, 0.67), round(answer, 2))
+  answer <- rocCurve(pa.lm, s = 0.5, data = dat)
+  
+  checkEqualsNumeric(c(0.04, 0.87), round(answer, 2))
   
 }
 
