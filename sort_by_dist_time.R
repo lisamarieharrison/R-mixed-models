@@ -4,7 +4,6 @@
 setwd(dir = "C:/Users/Lisa/Documents/phd/southern ocean/Mixed models/data")
 glm.full <- read.csv(file = "fullCTD.csv", header= T) 
 glm.full[which(glm.full$fluoro == -9), c(9:16)] <- NA
-attach(glm.full)
 
 #find absolute distance from station 2 for all stations
 library(lmap)
