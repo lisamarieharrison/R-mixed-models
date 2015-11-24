@@ -1,3 +1,5 @@
+#author: Lisa-Marie Harrison
+
 #------------------------- sort by distance or time -------------------------------#
 setwd(dir = "C:/Users/Lisa/Documents/phd/southern ocean/Mixed models/data")
 glm.full <- read.csv(file = "fullCTD.csv", header= T) 
